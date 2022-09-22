@@ -4,16 +4,13 @@ plugins {
     kotlin("jvm") version "1.7.10"
 }
 
-group = "me.soshin"
-version = "1.0-SNAPSHOT"
-
 repositories {
     mavenCentral()
 }
 
-val exposedVersion = "0.39.2"
-val postgresqlVersion = "42.4.1"
 dependencies {
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.39.2")
+    implementation("org.postgresql:postgresql:42.5.0")
     testImplementation(kotlin("test"))
 }
 
@@ -22,5 +19,5 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
