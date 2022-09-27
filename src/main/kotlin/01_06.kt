@@ -1,8 +1,5 @@
 import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.insertAndGetId
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
 fun main() {
@@ -11,22 +8,28 @@ fun main() {
 
     transaction {
         recreateTables()
+        createCustomers()
 
-        CustomersTable.insert { row ->
-            row[name] = "Carol"
+        val customers = CustomersTable.slice(CustomersTable.name).selectAll()
+            .filter { it[CustomersTable.name] == "Ernest" }
+            .forEach {
+            println(it)
         }
-
-        val newId = CustomersTable.insertAndGetId { row ->
-            row[name] = "Elisabeth"
-        }
-        println(newId)
-
-        val newRow = CustomersTable.insert { row ->
-            row[name] = "Ernest"
-        }.resultedValues?.first()
-
-        println(newRow)
     }
+}
+
+fun createCustomers() = transaction {
+    CustomersTable.insert { row ->
+        row[name] = "Carol"
+    }
+
+    val newId = CustomersTable.insertAndGetId { row ->
+        row[name] = "Elisabeth"
+    }
+
+    val newRow = CustomersTable.insert { row ->
+        row[name] = "Ernest"
+    }.resultedValues?.first()
 }
 
 fun recreateTables() = transaction {
