@@ -3,37 +3,18 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
 fun main() {
-    println("Hello Exposed!")
     connect()
 
     transaction {
-        recreateTables()
-        createCustomers()
 
-        CustomersTable.deleteWhere { CustomersTable.id eq 1 }
-
-        CustomersTable.deleteAll()
     }
-}
-
-fun createCustomers() = transaction {
-    CustomersTable.insert { row ->
-        row[name] = "Carol"
-    }
-
-    val newId = CustomersTable.insertAndGetId { row ->
-        row[name] = "Elisabeth"
-    }
-
-    val newRow = CustomersTable.insert { row ->
-        row[name] = "Ernest"
-    }.resultedValues?.first()
 }
 
 fun recreateTables() = transaction {
     SchemaUtils.drop(CustomersTable)
     SchemaUtils.create(CustomersTable)
 }
+
 fun connect() {
     Database.connect(
         "jdbc:postgresql://localhost:5432/sports_db",
