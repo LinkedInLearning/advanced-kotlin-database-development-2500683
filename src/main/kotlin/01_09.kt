@@ -1,4 +1,3 @@
-import CustomersTable.email
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -11,15 +10,9 @@ fun main() {
         recreateTables()
         createCustomers()
 
-        CustomersTable.update({ CustomersTable.id eq 2}){ row ->
-            row[email] = "ecarr1@oracle.com"
-        }
+        CustomersTable.deleteWhere { CustomersTable.id eq 1 }
 
-        CustomersTable.update({ CustomersTable.name eq "Carol"}){ row ->
-            with(SqlExpressionBuilder) {
-                row[name] = concat(name, name)
-            }
-        }
+        CustomersTable.deleteAll()
     }
 }
 
