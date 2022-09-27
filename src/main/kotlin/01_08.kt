@@ -1,3 +1,4 @@
+import CustomersTable.email
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -10,10 +11,14 @@ fun main() {
         recreateTables()
         createCustomers()
 
-        val customers = CustomersTable.slice(CustomersTable.name).selectAll()
-            .filter { it[CustomersTable.name] == "Ernest" }
-            .forEach {
-            println(it)
+        CustomersTable.update({ CustomersTable.id eq 2}){ row ->
+            row[email] = "ecarr1@oracle.com"
+        }
+
+        CustomersTable.update({ CustomersTable.name eq "Carol"}){ row ->
+            with(SqlExpressionBuilder) {
+                row[name] = concat(name, name)
+            }
         }
     }
 }
