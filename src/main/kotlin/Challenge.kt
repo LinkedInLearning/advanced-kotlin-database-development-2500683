@@ -6,7 +6,7 @@ fun main() {
     connect()
 
     transaction {
-
+        recreateTables()
     }
 }
 
