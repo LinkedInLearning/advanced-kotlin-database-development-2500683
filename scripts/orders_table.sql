@@ -1,6 +1,6 @@
 create table Orders
 (
-    ID             integer primary key,
+    ID             serial primary key,
     Date           date,
     Total_Due      varchar(10),
     status         varchar(10),
@@ -8,5 +8,5 @@ create table Orders
     Salesperson_ID integer
 );
 
-
+alter table Orders owner to sports_db_admin;
 grant all on Orders to sports_db_admin;

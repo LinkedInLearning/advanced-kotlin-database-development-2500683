@@ -1,6 +1,6 @@
 create table Customers
 (
-    ID         integer primary key,
+    ID         serial primary key,
     first_name varchar(20),
     last_name  varchar(20),
     email      varchar(50),
@@ -11,4 +11,5 @@ create table Customers
     zipcode    varchar(10)
 );
 
+alter table Customers owner to sports_db_admin;
 grant all on Customers to sports_db_admin;
