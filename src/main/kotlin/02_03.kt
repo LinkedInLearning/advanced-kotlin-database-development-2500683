@@ -1,21 +1,15 @@
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.math.BigDecimal
 
 fun main() {
     connect()
 
     transaction {
-        val capitalized = CustomersTable.firstName.function("UPPE").alias("capitalized")
-        CustomersTable
-            .slice(
-                CustomersTable.id,
-                capitalized
-            )
-            .selectAll()
-            .forEach { row ->
-                println(row[capitalized])
-            }
+        SchemaUtils.createMissingTablesAndColumns(OrdersTable)
+
+        CustomersTable.deleteWhere { CustomersTable.id eq 100 }
     }
 }
 
@@ -23,6 +17,11 @@ object CustomersTable : IntIdTable() {
     val firstName = varchar("first_name", 20)
     val lastName = varchar("last_name", 20)
     val email = varchar("email", 50).nullable()
+}
+
+private object OrdersTable : IntIdTable() {
+    val totalDue = varchar("total_due", 10)
+    val customerId = integer("customer_id").references(CustomersTable.id, onDelete = ReferenceOption.CASCADE)
 }
 
 fun connect() {
