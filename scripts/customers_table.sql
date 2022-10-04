@@ -12,4 +12,5 @@ create table Customers
 );
 
 alter table Customers owner to sports_db_admin;
+alter sequence customers_id_seq increment 1100;
 grant all on Customers to sports_db_admin;

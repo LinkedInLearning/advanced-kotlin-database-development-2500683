@@ -19,6 +19,8 @@ fun main() {
         }
 
         println("Time to execute: ${timeTook}ms")
+
+        CustomersTable.deleteWhere { CustomersTable.id greater 1100 }
     }
 }
 
