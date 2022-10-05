@@ -6,13 +6,13 @@ fun main() {
     connect()
 
     transaction {
-        CustomersTable
-            .selectAll()
-            .orderBy(CustomersTable.lastName to SortOrder.DESC)
-            .limit(10, offset = 20)
-            .forEach { row ->
-                println(row)
-            }
+        SchemaUtils.drop(OrdersTable)
+        SchemaUtils.create(OrdersTable)
+        OrdersTable.insert { row ->
+            row[totalDue] = "370.86"
+            row[customerId] = 789
+            row[status] = OrderStatus.Created
+        }
     }
 }
 
@@ -26,7 +26,19 @@ private object OrdersTable : IntIdTable() {
     val totalDue = varchar("total_due", 10)
     val customerId = integer("customer_id").references(CustomersTable.id, onDelete = ReferenceOption.CASCADE)
         .index()
+
+    val status = enumerationByName<OrderStatus>("status", 20)
 }
+
+enum class OrderStatus {
+    Created,
+    Due,
+    PastDue,
+    Cancelled,
+    Paid,
+    Returned,
+}
+
 
 fun connect() {
     Database.connect(
