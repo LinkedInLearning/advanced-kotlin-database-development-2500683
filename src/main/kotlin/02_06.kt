@@ -1,22 +1,18 @@
 import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.ReferenceOption
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
 fun main() {
     connect()
 
     transaction {
-        SchemaUtils.createMissingTablesAndColumns(CustomersTable)
-
-        // This will throw an exception, since the email was already used by another customer
-        CustomersTable.insert { row ->
-            row[firstName] = "Jane"
-            row[lastName] = "Carter"
-            row[email] = "mcooper4@go.com"
-        }
+        CustomersTable
+            .selectAll()
+            .orderBy(CustomersTable.lastName to SortOrder.DESC)
+            .limit(10, offset = 20)
+            .forEach { row ->
+                println(row)
+            }
     }
 }
 
