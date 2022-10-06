@@ -1,18 +1,22 @@
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
+import org.jetbrains.exposed.sql.kotlin.datetime.datetime
+import org.jetbrains.exposed.sql.kotlin.datetime.timestamp
 import org.jetbrains.exposed.sql.transactions.transaction
 
 fun main() {
     connect()
 
     transaction {
-        CustomersTable
-            .selectAll()
-            .orderBy(CustomersTable.lastName to SortOrder.DESC)
-            .limit(10, offset = 20)
-            .forEach { row ->
-                println(row)
-            }
+        SchemaUtils.drop(OrdersTable)
+        SchemaUtils.create(OrdersTable)
+
+        OrdersTable.insert { row ->
+            row[totalDue] = "100.18"
+            row[customerId] = 486
+            // The createdAt will be set automatically
+        }
     }
 }
 
@@ -26,6 +30,8 @@ private object OrdersTable : IntIdTable() {
     val totalDue = varchar("total_due", 10)
     val customerId = integer("customer_id").references(CustomersTable.id, onDelete = ReferenceOption.CASCADE)
         .index()
+
+    val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
 }
 
 fun connect() {
