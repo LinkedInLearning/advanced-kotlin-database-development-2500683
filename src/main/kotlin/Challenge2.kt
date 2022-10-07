@@ -6,11 +6,7 @@ fun main() {
     connect()
 
     transaction {
-        OrdersTable.select {
-            OrdersTable.status eq OrderStatus.PastDue
-        }.forEach {
-            println(it)
-        }
+
     }
 }
 
