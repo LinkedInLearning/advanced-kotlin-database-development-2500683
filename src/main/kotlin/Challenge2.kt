@@ -16,6 +16,7 @@ object CustomersTable : IntIdTable() {
     val lastName = varchar("last_name", 20)
     val email = varchar("email", 50).nullable().uniqueIndex()
     val city = varchar("city", 20)
+    val state = varchar("state", 20)
 }
 
 private object OrdersTable : IntIdTable() {
