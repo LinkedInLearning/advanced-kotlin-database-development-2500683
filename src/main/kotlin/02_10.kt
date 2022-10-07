@@ -1,27 +1,16 @@
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
-import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 import org.jetbrains.exposed.sql.transactions.transaction
 
 fun main() {
     connect()
 
     transaction {
-        (OrdersTable innerJoin CustomersTable)
-            .slice(OrdersTable.totalDue, CustomersTable.firstName, CustomersTable.lastName)
+        val count = CustomersTable.city.count()
+        CustomersTable.slice(count, CustomersTable.city)
             .selectAll()
-            .limit(10)
-            .orderBy(
-                CustomersTable.firstName to SortOrder.ASC,
-                CustomersTable.lastName to SortOrder.ASC
-            )
-            .forEach {
-                println(it)
-            }
-
-        (CustomersTable leftJoin OrdersTable)
-            .selectAll()
+            .groupBy(CustomersTable.city)
+            .having { count greater 10 }
             .forEach {
                 println(it)
             }
@@ -32,6 +21,7 @@ object CustomersTable : IntIdTable() {
     val firstName = varchar("first_name", 20)
     val lastName = varchar("last_name", 20)
     val email = varchar("email", 50).nullable().uniqueIndex()
+    val city = varchar("city", 20)
 }
 
 private object OrdersTable : IntIdTable() {
