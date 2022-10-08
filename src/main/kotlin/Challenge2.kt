@@ -6,7 +6,17 @@ fun main() {
     connect()
 
     transaction {
+        val count = OrdersTable.status.count()
 
+        (CustomersTable innerJoin OrdersTable)
+            .slice(count, CustomersTable.city, CustomersTable.state)
+            .select { OrdersTable.status eq OrderStatus.Paid }
+            .groupBy(CustomersTable.city, CustomersTable.state)
+            .limit(10)
+            .orderBy(count to SortOrder.DESC, CustomersTable.city to SortOrder.ASC)
+            .forEach {
+                println(it)
+            }
     }
 }
 
