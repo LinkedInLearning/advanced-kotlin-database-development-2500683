@@ -4,18 +4,23 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
-suspend fun main() {
+fun main() {
     connect()
 
-    newSuspendedTransaction {
-        // This call will work only from the context of Suspended Transaction
-        doIO()
-        CustomersTable.selectAll().limit(1)
-    }
-}
+    transaction {
+        exec("GRANT SELECT ON Customers to public")
+        val results = exec("select id, first_name from customers where id = ?",
+            listOf(IntegerColumnType() to 1000)
+        ) { resultSet ->
+            val results = mutableListOf<Int>()
+            while (resultSet.next()) {
+                results.add(resultSet.getInt(1))
+            }
+            results
+        }
 
-suspend fun doIO() {
-    delay(10L)
+        println(results)
+    }
 }
 
 object CustomersTable : IntIdTable() {
