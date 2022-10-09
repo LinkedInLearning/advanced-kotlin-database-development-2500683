@@ -1,21 +1,9 @@
-import kotlinx.coroutines.delay
 import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.ReferenceOption
 
-suspend fun main() {
-    connect()
+fun main() {
 
-    newSuspendedTransaction {
-        // This call will work only from the context of Suspended Transaction
-        doIO()
-        CustomersTable.selectAll().limit(1)
-    }
-}
-
-suspend fun doIO() {
-    delay(10L)
 }
 
 object CustomersTable : IntIdTable() {
