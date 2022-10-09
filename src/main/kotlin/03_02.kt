@@ -1,26 +1,22 @@
+import kotlinx.coroutines.delay
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
-fun main() {
+suspend fun main() {
     connect()
 
-    transaction {
-        addLogger(StdOutSqlLogger)
-        val count = OrdersTable.status.count()
-
-        val query = (CustomersTable innerJoin OrdersTable)
-            .slice(count, CustomersTable.city, CustomersTable.state)
-            .select { OrdersTable.status eq OrderStatus.Paid }
-            .groupBy(CustomersTable.city, CustomersTable.state)
-            .limit(10)
-            .orderBy(count to SortOrder.DESC, CustomersTable.city to SortOrder.ASC)
-            .prepareSQL(this)
-
-        println(query)
+    newSuspendedTransaction {
+        // This call will work only from the context of Suspended Transaction
+        doIO()
+        CustomersTable.selectAll().limit(1)
     }
 }
 
+suspend fun doIO() {
+    delay(10L)
+}
 
 object CustomersTable : IntIdTable() {
     val firstName = varchar("first_name", 20)
