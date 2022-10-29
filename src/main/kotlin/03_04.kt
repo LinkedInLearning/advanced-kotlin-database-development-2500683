@@ -1,7 +1,7 @@
-import kotlinx.coroutines.delay
 import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.IntegerColumnType
+import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.transactions.transaction
 
 fun main() {
