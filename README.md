@@ -1,6 +1,8 @@
 # Advanced Kotlin Database Development
 This is the repository for the LinkedIn Learning course Advanced Kotlin Database Development. The full course is available from [LinkedIn Learning][lil-course-url].
 
+![Advanced Kotlin Database Development][lil-thumbnail-url] 
+
 Kotlin is the preferred language for Android development, but its popularity in web development is on the rise, since it’s a modern programming language that is interoperable with Java and easier to learn than Scala. To develop a Kotlin backend application of any complexity, you need to interact with databases extensively. In this course, Alexey Soshinl teaches you how to get started. He shows you how to set up the connection using the Exposed library, define and populate tables, and write and debug custom queries. He also provides a challenge after each chapter so you can test your knowledge as you work through the course.
 
 ## Instructions
@@ -33,4 +35,4 @@ Alexey Soshin
 Check out my other courses on [LinkedIn Learning](https://www.linkedin.com/learning/instructors/alexey-soshin).
 
 [lil-course-url]: https://www.linkedin.com/learning/advanced-kotlin-database-development?dApp=59033956
-[lil-thumbnail-url]: https://cdn.lynda.com/course/2500683/1671157490377?e=2147483647&v=beta&t=6SkFJLW3QefCYjY-sI8P12BYrV4oQjNmMeYfjKJgwgY-16x9.jpg
+[lil-thumbnail-url]: hhttps://media.licdn.com/dms/image/C560DAQEgBRstLtOJbA/learning-public-crop_675_1200/0/1671157490377?e=2147483647&v=beta&t=6SkFJLW3QefCYjY-sI8P12BYrV4oQjNmMeYfjKJgwgY
